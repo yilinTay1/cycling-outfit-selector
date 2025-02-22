@@ -1,0 +1,67 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Cycling Outfit Selector</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin-top: 50px;
+          }
+          #outfitButton {
+              padding: 10px 20px;
+              font-size: 16px;
+              cursor: pointer;
+              background-color: #ffcccb;
+              border: none;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+          }
+          #outfitButton:hover {
+              background-color: #ff9999;
+          }
+          #outfitDisplay {
+              margin-top: 20px;
+              font-size: 18px;
+              display: none;
+          }
+          .explode {
+              animation: explodeAnimation 0.5s forwards;
+          }
+          @keyframes explodeAnimation {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.5); }
+              100% { transform: scale(1); }
+          }
+      </style>
+  </head>
+  <body>
+      <h1>Pick Your Cycling Outfit!</h1>
+      <button id="outfitButton">Generate Outfit</button>
+      <div id="outfitDisplay"></div>
+
+      <script>
+          function chooseOutfit() {
+              const jerseys = ['Apricot', 'Green'];
+              const shorts = ['Skull Monton', 'Normal'];
+
+              const selectedJersey = jerseys[Math.floor(Math.random() * jerseys.length)];
+              const selectedShorts = shorts[Math.floor(Math.random() * shorts.length)];
+
+              return { selectedJersey, selectedShorts };
+          }
+
+          document.getElementById('outfitButton').addEventListener('click', function() {
+              const outfit = chooseOutfit();
+              const outfitDisplay = document.getElementById('outfitDisplay');
+              outfitDisplay.textContent = `Selected Jersey: ${outfit.selectedJersey}, Selected Shorts: ${outfit.selectedShorts}`;
+              outfitDisplay.style.display = 'block';
+              outfitDisplay.classList.add('explode');
+              setTimeout(() => {
+                  outfitDisplay.classList.remove('explode');
+              }, 500);
+          });
+      </script>
+  </body>
+  </html>
