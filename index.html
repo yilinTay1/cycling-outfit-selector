@@ -2,54 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cycling Outfit Selector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leandro's Cycling Outfit Selector</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 20px;
             background-color: #f0f8ff;
         }
-        #outfitButton {
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        #outfitButton, .feedbackButton {
             padding: 15px 30px;
             font-size: 18px;
             cursor: pointer;
             background-color: #ff69b4;
             color: white;
             border: none;
-            border-radius: 50px;
-            box-shadow: 0 5px #c74375;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            border-radius: 25px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
         }
-        #outfitButton:hover {
+        #outfitButton:hover, .feedbackButton:hover {
             background-color: #ff1493;
-            box-shadow: 0 3px #c74375;
-            top: 2px;
-        }
-        #outfitButton:active {
-            box-shadow: 0 1px #c74375;
-            top: 4px;
         }
         #outfitDisplay {
-            margin-top: 30px;
-            font-size: 22px;
-            display: none;
+            margin-top: 20px;
+            font-size: 20px;
             color: #ff4500;
-            animation: pop 0.5s ease-in-out forwards;
+            display: none;
         }
-        @keyframes pop {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .feedbackButton {
+            font-size: 24px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #ff69b4;
+        }
+        .feedbackButton:hover {
+            color: #ff1493;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+            #outfitButton, .feedbackButton {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            .feedbackButton {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Pick Your Cycling Outfit!</h1>
+    <h1>Hi Leandro! Let's Pick Your Cycling Outfit!</h1>
     <button id="outfitButton">Generate Outfit</button>
     <div id="outfitDisplay"></div>
+    <div id="feedbackButtons" style="display: none;">
+        <button class="feedbackButton" id="happyButton">😊</button>
+        <button class="feedbackButton" id="sadButton">😢</button>
+    </div>
 
     <!-- Include js-confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
@@ -59,30 +76,30 @@
         function chooseOutfit() {
             const jerseys = ['Apricot', 'Green'];
             const shorts = ['Skull Monton', 'Normal'];
-
             const selectedJersey = jerseys[Math.floor(Math.random() * jerseys.length)];
             const selectedShorts = shorts[Math.floor(Math.random() * shorts.length)];
-
             return { selectedJersey, selectedShorts };
         }
 
-        document.getElementById('outfitButton').addEventListener('click', function() {
+        function displayOutfit() {
             const outfit = chooseOutfit();
             const outfitDisplay = document.getElementById('outfitDisplay');
             outfitDisplay.textContent = `Selected Jersey: ${outfit.selectedJersey}, Selected Shorts: ${outfit.selectedShorts}`;
             outfitDisplay.style.display = 'block';
-            outfitDisplay.classList.add('pop');
-            setTimeout(() => {
-                outfitDisplay.classList.remove('pop');
-            }, 500);
+            document.getElementById('feedbackButtons').style.display = 'block';
+        }
 
-            // Trigger confetti
+        document.getElementById('outfitButton').addEventListener('click', displayOutfit);
+
+        document.getElementById('happyButton').addEventListener('click', () => {
             jsConfetti.addConfetti({
                 emojis: ['🎉', '✨', '🚴‍♀️', '🚴‍♂️'],
                 emojiSize: 50,
                 confettiNumber: 50,
             });
         });
+
+        document.getElementById('sadButton').addEventListener('click', displayOutfit);
     </script>
 </body>
 </html>
