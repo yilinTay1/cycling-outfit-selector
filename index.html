@@ -44,18 +44,6 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ff69b4;
-            opacity: 0.7;
-            animation: confetti-fall 1s linear forwards;
-        }
-        @keyframes confetti-fall {
-            0% { transform: translateY(0) rotate(0); }
-            100% { transform: translateY(500px) rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -63,7 +51,11 @@
     <button id="outfitButton">Generate Outfit</button>
     <div id="outfitDisplay"></div>
 
+    <!-- Include js-confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
     <script>
+        const jsConfetti = new JSConfetti();
+
         function chooseOutfit() {
             const jerseys = ['Apricot', 'Green'];
             const shorts = ['Skull Monton', 'Normal'];
@@ -74,31 +66,22 @@
             return { selectedJersey, selectedShorts };
         }
 
-        function createConfetti() {
-            const confettiCount = 30;
-            const confettiContainer = document.createDocumentFragment();
-            for (let i = 0; i < confettiCount; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * window.innerWidth + 'px';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
-                confettiContainer.appendChild(confetti);
-            }
-            document.body.appendChild(confettiContainer);
-            setTimeout(() => {
-                document.querySelectorAll('.confetti').forEach(confetti => confetti.remove());
-            }, 1000);
-        }
-
         document.getElementById('outfitButton').addEventListener('click', function() {
             const outfit = chooseOutfit();
             const outfitDisplay = document.getElementById('outfitDisplay');
             outfitDisplay.textContent = `Selected Jersey: ${outfit.selectedJersey}, Selected Shorts: ${outfit.selectedShorts}`;
             outfitDisplay.style.display = 'block';
-            outfitDisplay.classList.remove('pop');
-            void outfitDisplay.offsetWidth; // Trigger reflow to restart animation
             outfitDisplay.classList.add('pop');
-            createConfetti();
+            setTimeout(() => {
+                outfitDisplay.classList.remove('pop');
+            }, 500);
+
+            // Trigger confetti
+            jsConfetti.addConfetti({
+                emojis: ['🎉', '✨', '🚴‍♀️', '🚴‍♂️'],
+                emojiSize: 50,
+                confettiNumber: 50,
+            });
         });
     </script>
 </body>
