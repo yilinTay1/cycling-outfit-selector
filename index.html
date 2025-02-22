@@ -45,6 +45,11 @@
         .feedbackButton:hover {
             color: #ff1493;
         }
+        #combinationCount {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
         @media (max-width: 600px) {
             h1 {
                 font-size: 20px;
@@ -67,15 +72,17 @@
         <button class="feedbackButton" id="happyButton">😊</button>
         <button class="feedbackButton" id="sadButton">😢</button>
     </div>
+    <div id="combinationCount"></div>
 
     <!-- Include js-confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
     <script>
         const jsConfetti = new JSConfetti();
 
+        const jerseys = ['Apricot', 'Green'];
+        const shorts = ['Skull Monton', 'Normal'];
+
         function chooseOutfit() {
-            const jerseys = ['Apricot', 'Green'];
-            const shorts = ['Skull Monton', 'Normal'];
             const selectedJersey = jerseys[Math.floor(Math.random() * jerseys.length)];
             const selectedShorts = shorts[Math.floor(Math.random() * shorts.length)];
             return { selectedJersey, selectedShorts };
@@ -89,6 +96,12 @@
             document.getElementById('feedbackButtons').style.display = 'block';
         }
 
+        function calculateCombinations() {
+            const totalCombinations = jerseys.length * shorts.length;
+            const combinationCount = document.getElementById('combinationCount');
+            combinationCount.textContent = `Total Possible Combinations: ${totalCombinations}`;
+        }
+
         document.getElementById('outfitButton').addEventListener('click', displayOutfit);
 
         document.getElementById('happyButton').addEventListener('click', () => {
@@ -99,7 +112,17 @@
             });
         });
 
-        document.getElementById('sadButton').addEventListener('click', displayOutfit);
+        document.getElementById('sadButton').addEventListener('click', () => {
+            displayOutfit();
+            jsConfetti.addConfetti({
+                confettiNumber: 100,
+                confettiRadius: 6,
+                confettiColors: ['#ff69b4', '#ff1493', '#ff4500'],
+            });
+        });
+
+        // Initialize combination count on page load
+        calculateCombinations();
     </script>
 </body>
 </html>
